@@ -6,7 +6,7 @@ const sinon = require('sinon');
 describe('streams/limit-size-stream', () => {
   describe('LimitSizeStream', () => {
     it('стрим передает поступающие данные без изменений', (done) => {
-      const limitStream = new LimitSizeStream({limit: 3, encoding: 'utf-8'});
+      const limitStream = new LimitSizeStream({ limit: 3, encoding: 'utf-8' });
 
       const onData = sinon.spy();
 
@@ -28,7 +28,7 @@ describe('streams/limit-size-stream', () => {
     });
 
     it('при превышении лимита выбрасывается ошибка', (done) => {
-      const limitStream = new LimitSizeStream({limit: 2, encoding: 'utf-8'});
+      const limitStream = new LimitSizeStream({ limit: 2, encoding: 'utf-8' });
 
       const onData = sinon.spy();
 
@@ -57,7 +57,7 @@ describe('streams/limit-size-stream', () => {
 
     it('при проверке лимита должно учитываться количество байт, а не символов', (done) => {
       const smile = '😀';
-      const limitStream = new LimitSizeStream({limit: Buffer.from(smile).length * 2 + 1, encoding: 'utf-8'});
+      const limitStream = new LimitSizeStream({ limit: Buffer.from(smile).length * 2 + 1, encoding: 'utf-8' });
 
       const onData = sinon.spy();
 
