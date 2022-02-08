@@ -12,7 +12,7 @@ const client = axios.create({
 });
 
 describe('mongodb-mongoose/rest-api', () => {
-  describe('получение категорий и товаров', function() {
+  describe('получение категорий и товаров', function () {
     let _server;
     let category;
     let product;
@@ -54,30 +54,30 @@ describe('mongodb-mongoose/rest-api', () => {
         const response = await client.get('http://localhost:3000/api/categories');
 
         expect(
-            response.data,
-            'ответ сервера содержит массив .categories'
+          response.data,
+          'ответ сервера содержит массив .categories'
         ).to.have.property('categories').that.is.an('array');
 
         const categories = response.data.categories;
 
         expect(
-            categories[0],
-            'категория содержит поля title, id и subcategories'
+          categories[0],
+          'категория содержит поля title, id и subcategories'
         ).to.have.keys(['title', 'id', 'subcategories']);
 
         expect(
-            categories[0],
-            'категория содержит массив subcategories'
+          categories[0],
+          'категория содержит массив subcategories'
         ).to.have.property('subcategories').that.is.an('array');
 
         expect(
-            categories[0].id,
-            'идентификатор категории содержит тоже значение, что и в базе'
+          categories[0].id,
+          'идентификатор категории содержит тоже значение, что и в базе'
         ).to.equal(category.id);
 
         expect(
-            categories[0].subcategories[0].id,
-            'идентификатор подкатегории содержит тоже значение, что и в базе'
+          categories[0].subcategories[0].id,
+          'идентификатор подкатегории содержит тоже значение, что и в базе'
         ).to.equal(category.subcategories[0].id);
       });
     });
@@ -88,58 +88,58 @@ describe('mongodb-mongoose/rest-api', () => {
           const response = await client.get('http://localhost:3000/api/products');
 
           expect(
-              response.data,
-              'ответ сервера содержит массив .products'
+            response.data,
+            'ответ сервера содержит массив .products'
           ).to.have.property('products').that.is.an('array');
 
           expect(
-              response.data.products,
-              'массив должен содержать существующие продукты в базе',
+            response.data.products,
+            'массив должен содержать существующие продукты в базе',
           ).to.be.lengthOf(1);
           expect(
-              response.data.products[0],
-              'id должен соответствовать id созданного продукта',
+            response.data.products[0],
+            'id должен соответствовать id созданного продукта',
           ).to.have.property('id', product.id);
         });
 
         it('если товаров не найдено - должен возвращаться пустой массив', async () => {
           const response = await client.get('http://localhost:3000/api/products', {
-            params: {subcategory: (new ObjectId()).toString()},
+            params: { subcategory: (new ObjectId()).toString() },
           });
 
           expect(
-              response.data,
-              'ответ сервера содержит массив .products'
+            response.data,
+            'ответ сервера содержит массив .products'
           ).to.have.property('products').that.is.an('array');
 
           expect(
-              response.data.products,
-              'массив пустой'
+            response.data.products,
+            'массив пустой'
           ).to.be.empty;
         });
 
         it('товары по существующей подкатегории', async () => {
           const response = await client.get('http://localhost:3000/api/products', {
-            params: {subcategory: category.subcategories[0].id},
+            params: { subcategory: category.subcategories[0].id },
           });
 
           expect(
-              response.data,
-              'ответ сервера содержит массив .products'
+            response.data,
+            'ответ сервера содержит массив .products'
           ).to.have.property('products').that.is.an('array');
 
           const products = response.data.products;
 
           expect(
-              products[0],
-              'товар содержит поля title, id, category, subcategory, price, description и images'
+            products[0],
+            'товар содержит поля title, id, category, subcategory, price, description и images'
           ).to.have.keys([
             'title', 'id', 'category', 'subcategory', 'price', 'description', 'images',
           ]);
 
           expect(
-              products[0].id,
-              'идентификатор товара содержит тоже значение, что и в базе'
+            products[0].id,
+            'идентификатор товара содержит тоже значение, что и в базе'
           ).to.equal(product.id);
         });
       });
@@ -152,7 +152,7 @@ describe('mongodb-mongoose/rest-api', () => {
 
         it('сервер должен вернуть статус 404', async () => {
           const response = await client
-              .get('http://localhost:3000/api/products/5d208f60e13792398c2aa944');
+            .get('http://localhost:3000/api/products/5d208f60e13792398c2aa944');
 
           expect(response.status).to.equal(404);
         });
@@ -161,8 +161,8 @@ describe('mongodb-mongoose/rest-api', () => {
           const response = await client.get(`http://localhost:3000/api/products/${product.id}`);
 
           expect(
-              response.data,
-              'ответ сервера содержит ключ .product'
+            response.data,
+            'ответ сервера содержит ключ .product'
           ).to.have.property('product');
 
           expect(response.data.product.id).to.equal(product.id);
