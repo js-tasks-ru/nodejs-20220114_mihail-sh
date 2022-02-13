@@ -8,6 +8,7 @@ parserOptions:
 rules:
   linebreak-style: ["error", "windows"]
   object-curly-spacing: ["error", "always"]
+  indent: [2, 2]
   max-len:
     - error
     - code: 100
