@@ -1,4 +1,4 @@
-const {v4: uuid} = require('uuid');
+const { v4: uuid } = require('uuid');
 const User = require('../models/User');
 const sendMail = require('../libs/sendMail');
 
@@ -16,11 +16,11 @@ module.exports.register = async (ctx, next) => {
   await sendMail({
     to: user.email,
     subject: 'Подтвердите почту',
-    locals: {token: verificationToken},
+    locals: { token: verificationToken },
     template: 'confirmation',
   });
 
-  ctx.body = {status: 'ok'};
+  ctx.body = { status: 'ok' };
 };
 
 module.exports.confirm = async (ctx, next) => {
@@ -37,5 +37,5 @@ module.exports.confirm = async (ctx, next) => {
 
   const token = uuid();
 
-  ctx.body = {token};
+  ctx.body = { token };
 };
